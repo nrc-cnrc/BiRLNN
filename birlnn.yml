@@ -1,0 +1,31 @@
+name: birlnn
+channels:
+  - conda-forge
+  - rdkit
+  - openbabel
+  - pytorch
+  - anaconda
+  - defaults
+dependencies:
+  - matplotlib
+  - nbformat
+  - numpy
+  - numpy-base
+  - openbabel
+  - pandas
+  - pillow
+  - python=3.11.11
+  - pytorch
+  - cuda
+  - torchvision
+  - rdkit
+  - scikit-learn
+  - scipy
+  - seaborn
+  - pip
+  - jupyter
+  - pip:
+    - torchsummary
+    - selfies
+    - fcd_torch
+    - umap

@@ -1,0 +1,14 @@
+*.pyc
+*.csv
+*.png
+*.pdf
+*.zip
+*.svg
+*.dat
+*.log
+*.onnx
+*.gz
+*.hdf5
+*.txt
+*.json
+data/
