@@ -82,12 +82,6 @@ class Trainer():
             self._model = BIMODAL(self._molecular_size, self._encoding_size,
                                   self._learning_rate, self._hidden_units, pad_index=self._encoder.pad_index)
 
-        elif self._model_type == 'NADE':
-            self._generation = self._config['MODEL']['generation']
-            self._missing_token = self._encoder.encode([self._config['TRAINING']['missing_token']])
-            self._model = NADE(self._molecular_size, self._encoding_size, self._learning_rate,
-                               self._hidden_units, self._generation, self._missing_token)
-
         # pass absolute data path to encoder
         data_path = os.path.join(self._base_path, 'data', self._file_name)
         self._data = self._encoder.encode_from_file(data_path)
