@@ -12,20 +12,22 @@ You can use this repository for both unconstrained and constrained generation of
 The following methods are implemented:
 * **Bidirectional Molecule Design by Alternate Learning** (BIMODAL), see [Grisoni *et al.* 2020](https://pubs.acs.org/doi/10.1021/acs.jcim.9b00943).
 * **Synchronous Forward Backward RNN** (FB-RNN), based on [Mou *et al.* 2016](https://arxiv.org/pdf/1512.06612.pdf).
-* **Forward RNN**, *i.e.*, unidirectional RNN predicting in forward direction. 
+* **Forward RNN**, *i.e.*, unidirectional RNN predicting in forward direction.
 * **Backward RNN**, *i.e.*, unidirectional RNN predicting in backward direction.
 
-
 ## Table of Contents
-1. [Prerequisites](#Prerequisites)
-2. [Using the Code](#Using_the_code)
-  1. [Sampling from a pre-trained model](#Sample)
-  2. [Training a model on your data](#Training) 
-  3. [RL fine-tuning and evaluation](#Finetuning) 
-  4. [Environment tips](#EnvTips)
 
-3. [Authors](#Authors)
-4. [License](#License)
+## Table of Contents <!-- omit in toc -->
+
+- [Prerequisites](#prerequisites)
+- [Sampling from a pre-trained model ](#sampling-from-a-pre-trained-model-)
+- [Training a New Model](#training-a-new-model)
+- [Fine-tuning via Reinforcement Learning ](#fine-tuning-via-reinforcement-learning-)
+- [Environment tips: PyTorch vision ops and C++ ABI ](#environment-tips-pytorch-vision-ops-and-c-abi-)
+- [Retrosynthesis with AiZynthFinder (UNDER DEVELOPMENT)](#retrosynthesis-with-aizynthfinder-under-development)
+- [Authors](#authors)
+- [License](#license)
+- [Copyright](#copyright)
 
 ## Prerequisites<a name="Prerequisites"></a>
 
@@ -35,7 +37,7 @@ This repository can be cloned with the following command:
 git clone https://github.com/nrc-cnrc/BiRLNN
 ```
 
-To install the necessary packages to run the code, we recommend using [conda](https://www.anaconda.com/download/). 
+To install the necessary packages to run the code, we recommend using [conda](https://www.anaconda.com/download/).
 Once conda is installed, you can install the virtual environment:
 
 ```
@@ -69,9 +71,9 @@ bash code/scripts/main_workflow.sh
 ## Sampling from a pre-trained model <a name="Sample"></a>
 
 In this repository, we provide you with 22 pre-trained models you can use for sampling (stored in [evaluation/](evaluation/)).
-These models were trained on a set of 271,913 bioactive molecules from ChEMBL22 (K<sub>d/I</sub>/IC<sub>50</sub>/EC<sub>50</sub> <1μM), for 10 epochs.    
+These models were trained on a set of 271,913 bioactive molecules from ChEMBL22 (K<sub>d/I</sub>/IC<sub>50</sub>/EC<sub>50</sub> <1μM), for 10 epochs.
 
-To sample SMILES, you can create a new file in [model/](model/) and use the *Sampler class*. 
+To sample SMILES, you can create a new file in [model/](model/) and use the *Sampler class*.
 For example, to sample from the pre-trained BIMODAL model with 512 units:
 
 ```
@@ -93,7 +95,7 @@ Parameters:
 * *unique* (bool): if set to *True*, only generate unique SMILES are provided (increases the sampling time)
 * *write_csv* (bool): if set to *True*, the .csv file of the generated smiles will be exported in the specified directory.
 
-*Notes*: 
+*Notes*:
 - For the provided pre-trained models, only *fold=[1]* and *epoch=[9]* are provided.
 - The list of available models and their description are provided in [evaluation/model_names.md](evaluation/model_names.md)
 
@@ -123,7 +125,7 @@ Training requires a parameter file (.ini) with a given set of parameters. You ca
 
 
 |Section		|Parameter     	| Description			|Comments|
-| --- | --- | --- | --- |	
+| --- | --- | --- | --- |
 |Model		|model         	| Type				| ForwardRNN, BackwardRNN, FBRNN, BIMODAL  |
 | 		|hidden_units	| Number of hidden units	|	Suggested value: 256 for ForwardRNN, BackwardRNN, FBRNN;  128 for BIMODAL|
 |		|generation	| Defined through preprocessing 			| fixed, random |
@@ -141,7 +143,7 @@ Training requires a parameter file (.ini) with a given set of parameters. You ca
 
 Options for training:
 
-- Cross-validation: 
+- Cross-validation:
 ```
 from trainer import Trainer
 
@@ -157,14 +159,14 @@ t = Trainer(experiment_name = 'BIMODAL_fixed_512')
 t.single_run(stor_dir = '../evaluation/', restart = False)
 ```
 
-Parameters:   
+Parameters:
 * *experiment_name* :  Name of parameter file (.ini)
 * *stor_dir*: Directory where outputs can be found
 * *restart*: If true, automatic restart from saved models (e.g. to be used if your training was interrupted before completion)
 
 ### Evaluation
 
-You can do the evaluation of the outputs of your experiment with the [../evaluation/main_evaluator.py](../evaluation/main_evaluator.py) with the following possibilities:   
+You can do the evaluation of the outputs of your experiment with the [../evaluation/main_evaluator.py](../evaluation/main_evaluator.py) with the following possibilities:
 
 ```
 from evaluation import Evaluator
@@ -183,7 +185,7 @@ Parameters:
 
 Note:
 - the losses plot can be found, in that case, in '{experiment_name}/statistic/all_statistic.png'
-- the novel, valid and unique SMILES plot can be found, in that case, in '../evaluation/{experiment_name}/molecules/novel_valid_unique_molecules.png'    
+- the novel, valid and unique SMILES plot can be found, in that case, in '../evaluation/{experiment_name}/molecules/novel_valid_unique_molecules.png'
 
 ## Fine-tuning via Reinforcement Learning <a name="Finetuning"></a>
 
