@@ -15,8 +15,6 @@ The following methods are implemented:
 * **Forward RNN**, *i.e.*, unidirectional RNN predicting in forward direction.
 * **Backward RNN**, *i.e.*, unidirectional RNN predicting in backward direction.
 
-## Table of Contents
-
 ## Table of Contents <!-- omit in toc -->
 
 - [Prerequisites](#prerequisites)
